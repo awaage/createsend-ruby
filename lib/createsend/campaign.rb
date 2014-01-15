@@ -26,7 +26,7 @@ module CreateSend
     #   which the campaign will be sent.
     def self.create(auth, client_id, subject, name, from_name, from_email,
       reply_to, html_url, text_url, list_ids, segment_ids)
-      options = { :body => {
+      options = { :body => JSON.generate({
         :Subject => subject,
         :Name => name,
         :FromName => from_name,
@@ -35,7 +35,7 @@ module CreateSend
         :HtmlUrl => html_url,
         :TextUrl => text_url,
         :ListIDs => list_ids,
-        :SegmentIDs => segment_ids }.to_json }
+        :SegmentIDs => segment_ids }, :ascii_only => true) }
       cs = CreateSend.new auth
       response = cs.post "/campaigns/#{client_id}.json", options
       response.parsed_response
